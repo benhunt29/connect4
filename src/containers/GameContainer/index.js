@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import LoadingOverlay from "../../components/LoadingOverlay";
 import StartGameModal from "../../components/StartGameModal";
+import { fetchGame } from "../../redux/actions/game";
 
 class GameContainer extends Component {
   render() {
@@ -26,7 +27,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  fetchGameAction: fetchGame
+};
 
 export default connect(
   mapStateToProps,
