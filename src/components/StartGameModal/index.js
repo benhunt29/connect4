@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import styled from "styled-components";
+import Styled from "styled-components";
 
 import Modal from "../Modal";
 
-const CenteredColumn = styled.div`
+const CenteredColumn = Styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,8 +1,8 @@
 import React from "react";
 
-import styled, { keyframes } from "styled-components";
+import Styled, { keyframes } from "styled-components";
 
-const Overlay = styled.div`
+const Overlay = Styled.div`
   background-color: white;
   position: fixed;
   top: 0;
@@ -28,7 +28,7 @@ const rotate360 = keyframes`
   }
 `;
 
-const Spinner = styled.div`
+const Spinner = Styled.div`
   animation: ${rotate360} 1s linear infinite;
   transform: translateZ(0);
 

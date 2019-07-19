@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import Styled from "styled-components";
 
 import LoadingOverlay from "./components/LoadingOverlay";
 import GameContainer from "./containers/GameContainer";
 
-const Wrapper = styled.div`
+const Wrapper = Styled.div`
   height: 100vh;
 `;
 

@@ -3,36 +3,56 @@ import { connect } from "react-redux";
 
 import LoadingOverlay from "../../components/LoadingOverlay";
 import StartGameModal from "../../components/StartGameModal";
-import { fetchGame } from "../../redux/actions/game";
+import GameGrid from "../../components/GameGrid";
+import {
+  fetchComputerMove,
+  submitPlayerMove,
+  startGame
+} from "../../redux/actions/game";
 
 class GameContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isStartGameModalOpen: false
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isStartGameModalOpen: false
+  //   };
+  // }
 
-  toggleStartGameModal = () => {
-    this.setState(state => {
-      return !state.isStartGameModalOpen;
-    });
-  };
+  // toggleStartGameModal = () => {
+  //   this.setState(state => {
+  //     return !state.isStartGameModalOpen;
+  //   });
+  // };
 
   handleStartGame = (event, computerStarts = false) => {
-    console.log("computer starts: ", computerStarts);
+    const { fetchComputerMoveAction, startGameAction } = this.props;
+    startGameAction();
+    if (computerStarts) {
+      fetchComputerMoveAction();
+    }
   };
 
   render() {
-    const { isLoading, isGameStarted } = this.props;
-    console.log(isLoading);
+    const {
+      isLoading,
+      hasGameStarted,
+      grid,
+      submitPlayerMoveAction,
+      selectableColumns
+    } = this.props;
     return (
-      <div>
+      <>
         {isLoading && <LoadingOverlay />}
-        <StartGameModal isOpen={true} handleStartGame={this.handleStartGame} />
-        <div>Game1</div>
-        <div>Game2</div>
-      </div>
+        <StartGameModal
+          isOpen={!hasGameStarted}
+          handleStartGame={this.handleStartGame}
+        />
+        <GameGrid
+          grid={grid}
+          handleMoveSelect={submitPlayerMoveAction}
+          selectableColumns={selectableColumns}
+        />
+      </>
     );
   }
 }
@@ -40,12 +60,16 @@ class GameContainer extends Component {
 const mapStateToProps = state => {
   return {
     isLoading: state.game.isLoading,
-    isGameStarted: state.game.isGameStarted
+    hasGameStarted: state.game.hasGameStarted,
+    grid: state.game.grid,
+    selectableColumns: state.game.selectableColumns
   };
 };
 
 const mapDispatchToProps = {
-  fetchGameAction: fetchGame
+  fetchComputerMoveAction: fetchComputerMove,
+  submitPlayerMoveAction: selectedColumn => submitPlayerMove(selectedColumn),
+  startGameAction: startGame
 };
 
 export default connect(
