@@ -14,9 +14,23 @@ export const formatUrl = (url, params) => {
 };
 
 export const makeRequest = async (url, options = {}) => {
-  const response = await fetch(url, options);
+  const defaultOptions = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  };
+  const response = await fetch(url, { ...defaultOptions, ...options });
+  // const json = await response.json();
+  // console.log(json);
   if (!response.ok) {
-    throw new Error(`Request rejected with status ${response.status}`);
+    console.log(response);
+    if (response.statusText) {
+      throw new Error(response.statusText);
+    } else {
+      const errorMsg = await response.text();
+      throw new Error(errorMsg);
+    }
   } else {
     return response.json();
   }

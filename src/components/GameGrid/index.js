@@ -73,7 +73,7 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
 GameGrid.propTypes = {
   grid: PropTypes.array,
   handleMoveSelect: PropTypes.func,
-  selectableColumns: PropTypes.object
+  selectableColumns: PropTypes.array
 };
 
 export default GameGrid;

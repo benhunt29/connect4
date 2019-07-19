@@ -3,7 +3,8 @@ import {
   SUBMIT_MOVE_PENDING,
   SUBMIT_MOVE_SUCCESS,
   SUBMIT_MOVE_ERROR,
-  START_GAME
+  START_GAME,
+  GAME_IS_DRAW
 } from "../actionTypes";
 
 export const fetchComputerMove = delay => {
@@ -27,8 +28,13 @@ export const fetchComputerMove = delay => {
         payload: { moves: response, player: "2" }
       });
     } catch (err) {
+      console.log("err: ", err.message);
+      if (err.message.indexOf("overloaded")) {
+        dispatch({ type: GAME_IS_DRAW });
+      } else {
+        dispatch({ type: SUBMIT_MOVE_ERROR, payload: err });
+      }
       console.log("DRAW");
-      dispatch({ type: SUBMIT_MOVE_ERROR, payload: err });
     }
   };
 };
@@ -43,7 +49,13 @@ export const submitPlayerMove = moveColumn => {
       payload: { moves: [...moves, moveColumn], player: "1" }
     });
 
-    dispatch(fetchComputerMove(1000));
+    const {
+      game: { winner, gameIsDraw }
+    } = getState();
+    console.log("WINNER: ", winner);
+    // if (winner === "" && !gameIsDraw) {
+    //   dispatch(fetchComputerMove(1000));
+    // }
   };
 };
 
