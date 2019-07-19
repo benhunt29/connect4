@@ -27,7 +27,7 @@ export const hasWinner = (grid, lastPlacedToken, winningCount = 4) => {
 const getRowCount = (grid, rowIndex, startColIndex, match) => {
   let leftRunner = startColIndex;
   let rightRunner = startColIndex;
-  let count = 0;
+  let count = 1;
   while (leftRunner >= 0) {
     if (grid[rowIndex][leftRunner] === match) {
       count++;
@@ -50,7 +50,7 @@ const getRowCount = (grid, rowIndex, startColIndex, match) => {
 const getColCount = (grid, startRowIndex, colIndex, match) => {
   let topRunner = startRowIndex;
   let bottomRunner = startRowIndex;
-  let count = 0;
+  let count = 1;
   while (topRunner >= 0) {
     if (grid[topRunner][colIndex] === match) {
       count++;
