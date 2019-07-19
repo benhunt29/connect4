@@ -15,50 +15,58 @@ const WrapperColumn = Styled.div`
   border-radius: 10px;
 `;
 
-const GameGrid = ({ grid, selectableColumns = [], handleMoveSelect }) => {
+const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
   let gridElements = grid.map(row => {
     return (
-      <div className="columns is-mobile">
+      <div className="columns is-mobile is-gapless">
         {row.map(col => {
-          return <Slot color={PLAYER_COLORS[col]} />;
+          return (
+            <div className="column">
+              <Slot color={PLAYER_COLORS[col]} />
+            </div>
+          );
         })}
       </div>
     );
   });
 
   const ButtonRow = (
-    <WrapperColumn className="column is-two-thirds">
-      <div className="columns">
-        {grid.map((col, index) => {
-          console.log(selectableColumns);
-          const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
-          return (
-            <div className="column">
-              <Slot
-                color={PLAYER_COLORS["1"]}
-                handleMoveSelect={handleMoveSelect}
-                slotColumn={index}
-                isSelectable={isSelectable}
-                isVisible={!isSelectable}
-              />
-            </div>
-          );
-        })}
-      </div>
-    </WrapperColumn>
+    <div className="columns is-mobile is-gapless">
+      {grid.map((col, index) => {
+        console.log(selectableColumns);
+        const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
+        return (
+          <div className="column">
+            <Slot
+              color={PLAYER_COLORS["1"]}
+              handleMoveSelect={handleMoveSelect}
+              slotColumn={index}
+              isSelectable={isSelectable}
+              isVisible={!isSelectable}
+            />
+          </div>
+        );
+      })}
+    </div>
   );
 
   return (
-    <WrapperColumns className="columns is-vcentered is-mobile">
-      <div className="column">
-        <div className="columns is-centered">{ButtonRow}</div>
-        <div className="columns is-centered">
-          <WrapperColumn className="column is-two-thirds has-background-grey-lighter">
-            {gridElements}
-          </WrapperColumn>
+    grid.length > 0 && (
+      <WrapperColumns className="columns is-vcentered is-mobile">
+        <div className="column">
+          <div className="columns is-centered is-mobile">
+            <WrapperColumn className="column is-two-thirds-tablet is-four-fifths-mobile">
+              {ButtonRow}
+            </WrapperColumn>
+          </div>
+          <div className="columns is-centered is-mobile">
+            <WrapperColumn className="column is-two-thirds-tablet is-four-fifths-mobile has-background-grey-lighter">
+              {gridElements}
+            </WrapperColumn>
+          </div>
         </div>
-      </div>
-    </WrapperColumns>
+      </WrapperColumns>
+    )
   );
 };
 

@@ -6,6 +6,7 @@ const ModalContent = Styled.div`
   background-color: white;
   border-radius: 5px;
   padding: 10px 10px 10px 10px;
+  max-width: 500px;
 `;
 
 const noop = () => {};

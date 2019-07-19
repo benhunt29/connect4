@@ -6,8 +6,8 @@ const Circle = Styled.div`
   border-radius: 50%;
   width: 5vw;
   height: 5vw;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 25px;
+  min-height: 25px;
   max-width: 150px;
   max-height: 150px;
   background-color: ${props => props.color || "white"};
@@ -15,12 +15,6 @@ const Circle = Styled.div`
     cursor: ${props => (props.isSelectable ? "pointer" : "")};
   }
   opacity: ${props => (props.isVisible ? 0 : 1)};
-`;
-
-const DisabledDiv = Styled.div`
-  height: 100%;
-  width: 100%;
-  fontsize: 16px;
 `;
 
 const SlotRow = Styled.div`

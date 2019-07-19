@@ -7,6 +7,7 @@ const CenteredColumn = Styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
 
 const StartGameModal = ({ isOpen = false, handleStartGame }) => {
