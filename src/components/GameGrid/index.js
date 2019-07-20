@@ -10,7 +10,6 @@ const WrapperColumns = Styled.div`
 `;
 
 const WrapperColumn = Styled.div`
-  max-width: 500px;
   padding: 30px 10px 30px 10px;
   border-radius: 10px;
 `;
@@ -51,15 +50,13 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
 
   return (
     grid.length > 0 && (
-      <WrapperColumns className="columns is-vcentered is-mobile">
-        <div className="column">
+      <WrapperColumns className="columns is-vcentered is-centered is-mobile">
+        <div className="column is-two-thirds-tablet is-full-mobile is-half-desktop">
           <div className="columns is-centered is-mobile">
-            <WrapperColumn className="column is-two-thirds-tablet is-four-fifths-mobile">
-              {ButtonRow}
-            </WrapperColumn>
+            <WrapperColumn className="column">{ButtonRow}</WrapperColumn>
           </div>
           <div className="columns is-centered is-mobile">
-            <WrapperColumn className="column is-two-thirds-tablet is-four-fifths-mobile has-background-grey-lighter">
+            <WrapperColumn className="column has-background-grey-lighter">
               {gridElements}
             </WrapperColumn>
           </div>

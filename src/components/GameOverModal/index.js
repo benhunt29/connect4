@@ -27,7 +27,7 @@ const getHeadingAndSubtext = (winner, isDraw) => {
     return {
       headingText: "Well...",
       subText:
-        "It looks like we’ve got ourselves a draw. Who knows what the implications of that are?"
+        "It looks like we’ve got ourselves a draw. Who knows what the implications of that are? ¯\\_(ツ)_/¯"
     };
   }
 };
