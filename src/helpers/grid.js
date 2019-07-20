@@ -26,7 +26,13 @@ export const hasWinner = (grid, lastPlacedToken, winningCount = 4) => {
   );
 };
 
-const rowHasWinner = (grid, rowIndex, startColIndex, match, winningCount) => {
+export const rowHasWinner = (
+  grid,
+  rowIndex,
+  startColIndex,
+  match,
+  winningCount
+) => {
   let count = 1;
 
   // check left
@@ -55,21 +61,16 @@ const rowHasWinner = (grid, rowIndex, startColIndex, match, winningCount) => {
   return false;
 };
 
-const colHasWinner = (grid, startRowIndex, colIndex, match, winningCount) => {
+export const colHasWinner = (
+  grid,
+  startRowIndex,
+  colIndex,
+  match,
+  winningCount
+) => {
   let count = 1;
-  // check up
-  let i = startRowIndex - 1;
-  while (i >= 0) {
-    if (grid[i][colIndex] === match) {
-      count++;
-      if (count === winningCount) return true;
-      i--;
-    } else {
-      break;
-    }
-  }
-  // check down
-  i = startRowIndex + 1;
+  // only need to check down (gravity, yo)
+  let i = startRowIndex + 1;
   while (i <= grid.length - 1) {
     if (grid[i][colIndex] === match) {
       count++;
@@ -82,7 +83,7 @@ const colHasWinner = (grid, startRowIndex, colIndex, match, winningCount) => {
   return false;
 };
 
-const diagonalHasWinner = (
+export const diagonalHasWinner = (
   grid,
   startRowIndex,
   startColIndex,
