@@ -8,7 +8,6 @@ const Wrapper = Styled.div`
 `;
 
 const GameContainerWrapper = Styled.div`
-  height: 100%;
   padding-left: 20px;
   padding-right: 20px;
 `;
