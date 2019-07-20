@@ -4,7 +4,9 @@ import {
   SUBMIT_MOVE_SUCCESS,
   SUBMIT_MOVE_ERROR,
   START_GAME,
-  GAME_IS_DRAW
+  BOARD_IS_FULL,
+  RESET_GAME,
+  RESET_ERROR
 } from "../actionTypes";
 
 export const fetchComputerMove = delay => {
@@ -12,7 +14,6 @@ export const fetchComputerMove = delay => {
     const {
       game: { moves = [] }
     } = getState();
-    console.log(getState());
     try {
       dispatch({ type: SUBMIT_MOVE_PENDING });
       if (delay) {
@@ -28,13 +29,11 @@ export const fetchComputerMove = delay => {
         payload: { moves: response, player: "2" }
       });
     } catch (err) {
-      console.log("err: ", err.message);
-      if (err.message.indexOf("overloaded")) {
-        dispatch({ type: GAME_IS_DRAW });
+      if (err.message.indexOf("overloaded") > 0) {
+        dispatch({ type: BOARD_IS_FULL });
       } else {
-        dispatch({ type: SUBMIT_MOVE_ERROR, payload: err });
+        dispatch({ type: SUBMIT_MOVE_ERROR, payload: { err } });
       }
-      console.log("DRAW");
     }
   };
 };
@@ -52,10 +51,9 @@ export const submitPlayerMove = moveColumn => {
     const {
       game: { winner, gameIsDraw }
     } = getState();
-    console.log("WINNER: ", winner);
-    // if (winner === "" && !gameIsDraw) {
-    //   dispatch(fetchComputerMove(1000));
-    // }
+    if (winner === "" && !gameIsDraw) {
+      dispatch(fetchComputerMove(1000));
+    }
   };
 };
 
@@ -64,3 +62,9 @@ export const startGame = () => {
     dispatch({ type: START_GAME });
   };
 };
+
+export const resetGame = () => {
+  return dispatch => dispatch({ type: RESET_GAME });
+};
+
+export const resetError = () => dispatch => dispatch({ type: RESET_ERROR });

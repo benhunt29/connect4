@@ -1,29 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import LoadingOverlay from "../../components/LoadingOverlay";
 import StartGameModal from "../../components/StartGameModal";
+import GameOverModal from "../../components/GameOverModal";
+import ErrorModal from "../../components/ErrorModal";
 import GameGrid from "../../components/GameGrid";
 import {
   fetchComputerMove,
   submitPlayerMove,
-  startGame
+  startGame,
+  resetGame,
+  resetError
 } from "../../redux/actions/game";
+import {
+  selectGrid,
+  selectGameHasStarted,
+  selectGameIsDraw,
+  selectHasError,
+  selectIsLoading,
+  selectSelectableColumns,
+  selectWinner
+} from "../../redux/selectors/game";
 
 class GameContainer extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     isStartGameModalOpen: false
-  //   };
-  // }
-
-  // toggleStartGameModal = () => {
-  //   this.setState(state => {
-  //     return !state.isStartGameModalOpen;
-  //   });
-  // };
-
   handleStartGame = (event, computerStarts = false) => {
     const { fetchComputerMoveAction, startGameAction } = this.props;
     startGameAction();
@@ -38,7 +39,12 @@ class GameContainer extends Component {
       hasGameStarted,
       grid,
       submitPlayerMoveAction,
-      selectableColumns
+      selectableColumns,
+      winner,
+      resetGameAction,
+      gameIsDraw,
+      error,
+      resetErrorAction
     } = this.props;
     return (
       <>
@@ -47,6 +53,12 @@ class GameContainer extends Component {
           isOpen={!hasGameStarted}
           handleStartGame={this.handleStartGame}
         />
+        <GameOverModal
+          isOpen={hasGameStarted && (winner !== "" || gameIsDraw)}
+          handleStartNewGame={resetGameAction}
+          winner={winner}
+        />
+        <ErrorModal isOpen={error} onClose={resetErrorAction} />
         <GameGrid
           grid={grid}
           handleMoveSelect={submitPlayerMoveAction}
@@ -59,17 +71,34 @@ class GameContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.game.isLoading,
-    hasGameStarted: state.game.hasGameStarted,
-    grid: state.game.grid,
-    selectableColumns: state.game.selectableColumns
+    isLoading: selectIsLoading(state),
+    hasGameStarted: selectGameHasStarted(state),
+    grid: selectGrid(state),
+    selectableColumns: selectSelectableColumns(state),
+    winner: selectWinner(state),
+    gameIsDraw: selectGameIsDraw(state),
+    hasError: selectHasError(state)
   };
 };
 
 const mapDispatchToProps = {
   fetchComputerMoveAction: fetchComputerMove,
   submitPlayerMoveAction: selectedColumn => submitPlayerMove(selectedColumn),
-  startGameAction: startGame
+  startGameAction: startGame,
+  resetGameAction: resetGame,
+  resetErrorAction: resetError
+};
+
+GameContainer.propTypes = {
+  isLoading: PropTypes.bool,
+  hasGameStarted: PropTypes.bool,
+  grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  selectableColumns: PropTypes.arrayOf(
+    PropTypes.shape({ numPlacementsLeft: PropTypes.number })
+  ),
+  winner: PropTypes.string,
+  gameIsDraw: PropTypes.bool,
+  error: PropTypes.bool
 };
 
 export default connect(

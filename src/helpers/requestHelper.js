@@ -16,15 +16,11 @@ export const formatUrl = (url, params) => {
 export const makeRequest = async (url, options = {}) => {
   const defaultOptions = {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
+      Accept: "application/json"
     }
   };
   const response = await fetch(url, { ...defaultOptions, ...options });
-  // const json = await response.json();
-  // console.log(json);
   if (!response.ok) {
-    console.log(response);
     if (response.statusText) {
       throw new Error(response.statusText);
     } else {

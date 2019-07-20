@@ -1,51 +1,53 @@
-export const constructGrid = size => {
-  return new Array(size).fill(null).map(() => new Array(size).fill(null));
+export const constructGrid = (size, fillValue = null) => {
+  return new Array(size)
+    .fill(fillValue)
+    .map(() => new Array(size).fill(fillValue));
 };
 
 export const addTokenToGrid = (grid, tokenColumn, tokenValue) => {
-  let row = grid.length - 1;
+  const newGrid = [...grid];
+  let row = newGrid.length - 1;
   while (row >= 0) {
-    if (grid[row][tokenColumn] === null) {
-      grid[row][tokenColumn] = tokenValue;
+    if (newGrid[row][tokenColumn] === null) {
+      newGrid[row][tokenColumn] = tokenValue;
       break;
     }
     row--;
   }
-  return { grid, placedRow: row, placedCol: tokenColumn };
+  return { newGrid, placedRow: row, placedCol: tokenColumn };
 };
 
 export const hasWinner = (grid, lastPlacedToken, winningCount = 4) => {
   const { row, col, player } = lastPlacedToken;
-  console.log(player);
-  const rowWinner = rowHasWinner(grid, row, col, player, winningCount);
-  console.log("ROW WINNER", rowWinner);
-  const colWinner = colHasWinner(grid, row, col, player, winningCount);
-  console.log("COL WINNER: ", colWinner);
-  // const colCount = getColCount(grid, row, col, player);
-  // console.log("COL COUNT", rowCount);
-  // return rowWinner || colWinner ||;
-  return diagonalHasWinner(grid, col, row, player, winningCount, -1);
+  return (
+    rowHasWinner(grid, row, col, player, winningCount) ||
+    colHasWinner(grid, row, col, player, winningCount) ||
+    diagonalHasWinner(grid, col, row, player, winningCount, -1)
+  );
 };
 
 const rowHasWinner = (grid, rowIndex, startColIndex, match, winningCount) => {
-  let leftRunner = startColIndex - 1;
-  let rightRunner = startColIndex + 1;
   let count = 1;
-  while (leftRunner >= 0) {
-    if (grid[rowIndex][leftRunner] === match) {
+
+  // check left
+  let i = startColIndex - 1;
+  while (i >= 0) {
+    if (grid[rowIndex][i] === match) {
       count++;
       if (count === winningCount) return true;
-      leftRunner--;
+      i--;
     } else {
       break;
     }
   }
 
-  while (rightRunner <= grid.length - 1) {
-    if (grid[rowIndex][rightRunner] === match) {
+  // check right
+  i = startColIndex + 1;
+  while (i <= grid.length - 1) {
+    if (grid[rowIndex][i] === match) {
       count++;
       if (count === winningCount) return true;
-      rightRunner++;
+      i++;
     } else {
       break;
     }
@@ -54,26 +56,25 @@ const rowHasWinner = (grid, rowIndex, startColIndex, match, winningCount) => {
 };
 
 const colHasWinner = (grid, startRowIndex, colIndex, match, winningCount) => {
-  let upRunner = startRowIndex - 1;
-  let downRunner = startRowIndex + 1;
   let count = 1;
-  console.log("GRID: ", grid);
-  console.log("ROW INDEX: ", colIndex);
-  console.log("BOTTOM RUNNER: ", downRunner);
-  while (upRunner >= 0) {
-    if (grid[upRunner][colIndex] === match) {
+  // check up
+  let i = startRowIndex - 1;
+  while (i >= 0) {
+    if (grid[i][colIndex] === match) {
       count++;
       if (count === winningCount) return true;
-      upRunner--;
+      i--;
     } else {
       break;
     }
   }
-  while (downRunner <= grid.length - 1) {
-    if (grid[downRunner][colIndex] === match) {
+  // check down
+  i = startRowIndex + 1;
+  while (i <= grid.length - 1) {
+    if (grid[i][colIndex] === match) {
       count++;
       if (count === winningCount) return true;
-      downRunner++;
+      i++;
     } else {
       break;
     }
@@ -86,36 +87,61 @@ const diagonalHasWinner = (
   startRowIndex,
   startColIndex,
   match,
-  winningCount,
-  diagonalDirection
+  winningCount
 ) => {
-  let upRunner = startRowIndex - diagonalDirection;
-  let downRunner = startRowIndex + diagonalDirection;
-  let leftRunner = startColIndex - diagonalDirection;
-  let rightRunner = startColIndex + diagonalDirection;
-
+  let i = startRowIndex - 1;
+  let j = startColIndex + 1;
   let count = 1;
+  // bottom left to top right diagonal
+  while (i >= 0 && j <= grid.length - 1) {
+    if (grid[i][j] === match) {
+      count++;
+      if (count === winningCount) return true;
+      i--;
+      j++;
+    } else {
+      break;
+    }
+  }
+  i = startRowIndex + 1;
+  j = startColIndex - 1;
+  while (j >= 0 && i <= grid.length - 1) {
+    if (grid[i][j] === match) {
+      count++;
+      if (count === winningCount) return true;
+      j--;
+      i++;
+    } else {
+      break;
+    }
+  }
 
-  while (upRunner >= 0 && rightRunner <= grid.length - 1) {
-    if (grid[upRunner][rightRunner] === match) {
+  // reset count and check other diagonal (top left to bottom right)
+  count = 1;
+  i = startRowIndex - 1;
+  j = startColIndex - 1;
+  while (i >= 0 && j >= 0) {
+    if (grid[i][j] === match) {
       count++;
       if (count === winningCount) return true;
-      upRunner--;
-      rightRunner++;
+      i--;
+      j--;
     } else {
       break;
     }
   }
-  while (leftRunner >= 0 && downRunner <= grid.length - 1) {
-    if (grid[downRunner][leftRunner] === match) {
+
+  i = startColIndex + 1;
+  j = startRowIndex + 1;
+  while (i <= grid.length - 1 && j <= grid.length - 1) {
+    if (grid[i][j] === match) {
       count++;
       if (count === winningCount) return true;
-      leftRunner--;
-      downRunner++;
+      i++;
+      j++;
     } else {
       break;
     }
   }
-  console.log(count);
   return false;
 };

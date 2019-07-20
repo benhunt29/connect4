@@ -16,12 +16,12 @@ const WrapperColumn = Styled.div`
 `;
 
 const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
-  let gridElements = grid.map(row => {
+  let gridElements = grid.map((row, i) => {
     return (
-      <div className="columns is-mobile is-gapless">
-        {row.map(col => {
+      <div className="columns is-mobile is-gapless" key={`slotRow-${i}`}>
+        {row.map((col, j) => {
           return (
-            <div className="column">
+            <div className="column" key={`slot${i}-${j}`}>
               <Slot color={PLAYER_COLORS[col]} />
             </div>
           );
@@ -33,10 +33,9 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
   const ButtonRow = (
     <div className="columns is-mobile is-gapless">
       {grid.map((col, index) => {
-        console.log(selectableColumns);
         const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
         return (
-          <div className="column">
+          <div className="column" key={index}>
             <Slot
               color={PLAYER_COLORS["1"]}
               handleMoveSelect={handleMoveSelect}

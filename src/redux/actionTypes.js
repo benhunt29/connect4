@@ -2,4 +2,6 @@ export const SUBMIT_MOVE_PENDING = "SUBMIT_MOVE_PENDING";
 export const SUBMIT_MOVE_SUCCESS = "SUBMIT_MOVE_SUCCESS";
 export const SUBMIT_MOVE_ERROR = "SUBMIT_MOVE_ERROR";
 export const START_GAME = "START_GAME";
-export const GAME_IS_DRAW = "GAME_IS_DRAW";
+export const BOARD_IS_FULL = "BOARD_IS_FULL";
+export const RESET_GAME = "RESET_GAME";
+export const RESET_ERROR = "RESET_ERROR";

@@ -4,7 +4,9 @@ import {
   SUBMIT_MOVE_SUCCESS,
   SUBMIT_MOVE_ERROR,
   START_GAME,
-  GAME_IS_DRAW
+  BOARD_IS_FULL,
+  RESET_GAME,
+  RESET_ERROR
 } from "../actionTypes";
 
 const initialState = {
@@ -16,7 +18,8 @@ const initialState = {
   selectableColumns: [],
   gameIsDraw: false,
   totalMovesLeft: 0,
-  winner: ""
+  winner: "",
+  error: undefined
 };
 
 export default function(state = initialState, action) {
@@ -30,7 +33,7 @@ export default function(state = initialState, action) {
       const { moves, player } = action.payload;
       const lastMove = moves[moves.length - 1];
 
-      const { grid: newGrid, placedRow, placedCol } = addTokenToGrid(
+      const { newGrid, placedRow, placedCol } = addTokenToGrid(
         grid,
         lastMove,
         player
@@ -41,7 +44,6 @@ export default function(state = initialState, action) {
       const hasMovesLeft = newSelectableColumns.some(
         col => col.numPlacementsLeft > 0
       );
-      console.log(hasMovesLeft);
       const winningMove = hasWinner(
         newGrid,
         { row: placedRow, col: placedCol, player },
@@ -52,13 +54,14 @@ export default function(state = initialState, action) {
         isLoading: false,
         hasGameStarted: true,
         moves,
-        grid: [...newGrid],
+        grid: newGrid,
         selectableColumns: newSelectableColumns,
-        winner: winningMove ? player : ""
+        winner: winningMove ? player : "",
+        gameIsDraw: !hasMovesLeft && !winningMove
       };
     }
     case SUBMIT_MOVE_ERROR: {
-      return { ...state, error: action.payload.err };
+      return { ...state, error: action.payload.err, isLoading: false };
     }
     case START_GAME: {
       const { gridSize } = state;
@@ -68,9 +71,13 @@ export default function(state = initialState, action) {
       }));
       return { ...state, hasGameStarted: true, grid, selectableColumns };
     }
-    case GAME_IS_DRAW: {
+    case BOARD_IS_FULL: {
       return { ...state, gameIsDraw: true, isLoading: false };
     }
+    case RESET_ERROR:
+      return { ...state, error: undefined };
+    case RESET_GAME:
+      return initialState;
     default:
       return state;
   }

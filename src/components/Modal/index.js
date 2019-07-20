@@ -29,7 +29,10 @@ Modal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   isClosable: PropTypes.bool,
-  children: PropTypes.arrayOf(PropTypes.node)
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
 };
 
 export default Modal;

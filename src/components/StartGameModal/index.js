@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import Styled from "styled-components";
+import PropTypes from "prop-types";
 
 import Modal from "../Modal";
 
@@ -36,6 +37,11 @@ const StartGameModal = ({ isOpen = false, handleStartGame }) => {
       </div>
     </Modal>
   );
+};
+
+StartGameModal.propTypes = {
+  isOpen: PropTypes.bool,
+  handleStartGame: PropTypes.func
 };
 
 export default StartGameModal;
