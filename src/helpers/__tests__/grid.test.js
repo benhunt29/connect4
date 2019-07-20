@@ -3,7 +3,8 @@ import {
   addTokenToGrid,
   rowHasWinner,
   colHasWinner,
-  diagonalHasWinner
+  diagonalHasWinner,
+  hasWinner
 } from "../grid";
 
 describe("grid", () => {
@@ -77,43 +78,92 @@ describe("grid", () => {
       grid[1][1] = "2";
       grid[2][1] = "2";
       grid[3][1] = "2";
-      const winningRow = colHasWinner(grid, 0, 1, "2", 4);
-      expect(winningRow).toEqual(true);
+      const winningCol = colHasWinner(grid, 0, 1, "2", 4);
+      expect(winningCol).toEqual(true);
     });
     it("should return false if the last placed token does not result in a winning column", () => {
       const grid = constructGrid(4);
       grid[1][1] = "2";
       grid[2][1] = "2";
       grid[3][1] = "2";
-      const winningRow = rowHasWinner(grid, 0, 1, "1", 4);
-      expect(winningRow).toEqual(false);
+      const winningCol = colHasWinner(grid, 0, 1, "1", 4);
+      expect(winningCol).toEqual(false);
     });
   });
 
   describe("diagonalHasWinner", () => {
     it("should return true if the last placed token results in a winning diagonal (top left to bottom right)", () => {
-      const grid = constructGrid(4);
-      grid[0][0] = "2";
-      grid[1][1] = "2";
-      grid[2][2] = "2";
-      const winningRow = diagonalHasWinner(grid, 3, 3, "2", 4);
-      expect(winningRow).toEqual(true);
+      const grid = [
+        [null, "2", null, null],
+        ["2", "2", "1", "2"],
+        ["1", "1", "2", "2"],
+        ["1", "2", "2", "2"]
+      ];
+      const winningDiagonal = diagonalHasWinner(grid, 0, 0, "2", 4);
+      expect(winningDiagonal).toEqual(true);
     });
     it("should return true if the last placed token results in a winning diagonal (top right to bottom left)", () => {
-      const grid = constructGrid(4);
-      grid[1][2] = "2";
-      grid[2][1] = "2";
-      grid[3][0] = "2";
-      const winningRow = diagonalHasWinner(grid, 0, 3, "2", 4);
-      expect(winningRow).toEqual(true);
+      const grid = [
+        ["1", "2", null, null],
+        ["2", "2", "1", "2"],
+        ["1", "1", "1", "2"],
+        ["1", "2", "2", "1"]
+      ];
+      const winningDiagonal = diagonalHasWinner(grid, 0, 3, "1", 4);
+      expect(winningDiagonal).toEqual(true);
     });
-    it("should return false if the last placed token does not result in a winning column", () => {
-      const grid = constructGrid(4);
-      grid[1][2] = "2";
-      grid[2][1] = "2";
-      grid[3][0] = "2";
-      const winningRow = rowHasWinner(grid, 0, 3, "2", 4);
-      expect(winningRow).toEqual(false);
+    it("should return false if the last placed token does not result in a winning diagonal", () => {
+      const grid = [
+        ["1", "2", null, "1"],
+        ["2", "2", "1", "2"],
+        ["1", "1", "1", "2"],
+        ["2", "2", "2", "1"]
+      ];
+      const winningDiagonal = diagonalHasWinner(grid, 0, 2, "2", 4);
+      expect(winningDiagonal).toEqual(false);
+    });
+  });
+
+  describe("hasWinner", () => {
+    it("should return true if there is a winning row", () => {
+      const grid = [
+        ["1", "2", null, "1"],
+        ["2", "2", null, "2"],
+        ["1", "1", null, "1"],
+        ["2", "2", "2", "1"]
+      ];
+      const winner = hasWinner(grid, { row: 2, col: 2, player: "1" }, 4);
+      expect(winner).toEqual(true);
+    });
+    it("should return true if there is a winning col", () => {
+      const grid = [
+        ["1", null, null, "1"],
+        ["2", "2", null, "2"],
+        ["1", "2", null, "1"],
+        ["2", "2", "2", "1"]
+      ];
+      const winner = hasWinner(grid, { row: 0, col: 1, player: "2" }, 4);
+      expect(winner).toEqual(true);
+    });
+    it("should return true if there is a winning diagonal", () => {
+      const grid = [
+        ["1", null, null, "2"],
+        ["2", "2", null, "2"],
+        ["1", "2", "2", "1"],
+        ["2", "2", "2", "1"]
+      ];
+      const winner = hasWinner(grid, { row: 1, col: 2, player: "2" }, 4);
+      expect(winner).toEqual(true);
+    });
+    it("should return false if there is no winning sequence", () => {
+      const grid = [
+        ["1", null, null, "2"],
+        ["2", "2", "1", "2"],
+        ["1", "2", "2", "1"],
+        ["2", "2", "2", "1"]
+      ];
+      const winner = hasWinner(grid, { row: 0, col: 2, player: "2" }, 4);
+      expect(winner).toEqual(false);
     });
   });
 });

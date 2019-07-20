@@ -29,10 +29,11 @@ export const fetchComputerMove = delay => {
         payload: { moves: response, player: "2" }
       });
     } catch (err) {
-      if (err.message.indexOf("overloaded") > 0) {
+      const { message = "error" } = err;
+      if (message.indexOf("overloaded") > 0) {
         dispatch({ type: BOARD_IS_FULL });
       } else {
-        dispatch({ type: SUBMIT_MOVE_ERROR, payload: { err } });
+        dispatch({ type: SUBMIT_MOVE_ERROR, payload: { err: message } });
       }
     }
   };

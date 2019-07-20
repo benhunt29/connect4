@@ -61,7 +61,11 @@ export default function(state = initialState, action) {
       };
     }
     case SUBMIT_MOVE_ERROR: {
-      return { ...state, error: action.payload.err, isLoading: false };
+      return {
+        ...state,
+        error: action.payload.err || "error",
+        isLoading: false
+      };
     }
     case START_GAME: {
       const { gridSize } = state;

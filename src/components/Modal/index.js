@@ -19,7 +19,11 @@ const Modal = ({ isOpen = false, onClose, isClosable = true, children }) => {
         {children}
       </ModalContent>
       {isClosable && (
-        <button className="modal-close is-large" aria-label="close" />
+        <button
+          className="modal-close is-large"
+          aria-label="close"
+          onClick={onClose}
+        />
       )}
     </div>
   );

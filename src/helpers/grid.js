@@ -22,7 +22,7 @@ export const hasWinner = (grid, lastPlacedToken, winningCount = 4) => {
   return (
     rowHasWinner(grid, row, col, player, winningCount) ||
     colHasWinner(grid, row, col, player, winningCount) ||
-    diagonalHasWinner(grid, col, row, player, winningCount, -1)
+    diagonalHasWinner(grid, row, col, player, winningCount)
   );
 };
 
@@ -69,7 +69,7 @@ export const colHasWinner = (
   winningCount
 ) => {
   let count = 1;
-  // only need to check down (gravity, yo)
+  // only need to check down (assuming this game obeys gravitational laws :))
   let i = startRowIndex + 1;
   while (i <= grid.length - 1) {
     if (grid[i][colIndex] === match) {

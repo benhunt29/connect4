@@ -43,7 +43,7 @@ class GameContainer extends Component {
       winner,
       resetGameAction,
       gameIsDraw,
-      error,
+      hasError,
       resetErrorAction
     } = this.props;
     return (
@@ -58,7 +58,7 @@ class GameContainer extends Component {
           handleStartNewGame={resetGameAction}
           winner={winner}
         />
-        <ErrorModal isOpen={error} onClose={resetErrorAction} />
+        <ErrorModal isOpen={hasError} onClose={resetErrorAction} />
         <GameGrid
           grid={grid}
           handleMoveSelect={submitPlayerMoveAction}
@@ -98,7 +98,7 @@ GameContainer.propTypes = {
   ),
   winner: PropTypes.string,
   gameIsDraw: PropTypes.bool,
-  error: PropTypes.bool
+  hasError: PropTypes.bool
 };
 
 export default connect(
