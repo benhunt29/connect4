@@ -22,43 +22,56 @@ const initialState = {
   error: undefined
 };
 
+const handleSubmitMoveSuccess = (state, payload) => {
+  const { grid, selectableColumns, gridSize } = state;
+
+  const { moves, player } = payload;
+  const lastMove = moves[moves.length - 1];
+
+  const { newGrid, placedRow, placedCol } = addTokenToGrid(
+    grid,
+    lastMove,
+    player
+  );
+
+  const newSelectableColumns = [...selectableColumns];
+  selectableColumns[placedCol].numPlacementsLeft--;
+  const hasMovesLeft = newSelectableColumns.some(
+    col => col.numPlacementsLeft > 0
+  );
+  const winningMove = hasWinner(
+    newGrid,
+    { row: placedRow, col: placedCol, player },
+    gridSize
+  );
+  return {
+    ...state,
+    isLoading: false,
+    hasGameStarted: true,
+    moves,
+    grid: newGrid,
+    selectableColumns: newSelectableColumns,
+    winner: winningMove ? player : "",
+    gameIsDraw: !hasMovesLeft && !winningMove
+  };
+};
+
+const handleStartGame = state => {
+  const { gridSize } = state;
+  const grid = constructGrid(gridSize);
+  const selectableColumns = grid.map(row => ({
+    numPlacementsLeft: row.length
+  }));
+  return { ...state, hasGameStarted: true, grid, selectableColumns };
+};
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case SUBMIT_MOVE_PENDING: {
       return { ...state, isLoading: true };
     }
     case SUBMIT_MOVE_SUCCESS: {
-      const { grid, selectableColumns, gridSize } = state;
-
-      const { moves, player } = action.payload;
-      const lastMove = moves[moves.length - 1];
-
-      const { newGrid, placedRow, placedCol } = addTokenToGrid(
-        grid,
-        lastMove,
-        player
-      );
-
-      const newSelectableColumns = [...selectableColumns];
-      selectableColumns[placedCol].numPlacementsLeft--;
-      const hasMovesLeft = newSelectableColumns.some(
-        col => col.numPlacementsLeft > 0
-      );
-      const winningMove = hasWinner(
-        newGrid,
-        { row: placedRow, col: placedCol, player },
-        gridSize
-      );
-      return {
-        ...state,
-        isLoading: false,
-        hasGameStarted: true,
-        moves,
-        grid: newGrid,
-        selectableColumns: newSelectableColumns,
-        winner: winningMove ? player : "",
-        gameIsDraw: !hasMovesLeft && !winningMove
-      };
+      return handleSubmitMoveSuccess(state, action.payload || {});
     }
     case SUBMIT_MOVE_ERROR: {
       return {
@@ -68,12 +81,7 @@ export default function(state = initialState, action) {
       };
     }
     case START_GAME: {
-      const { gridSize } = state;
-      const grid = constructGrid(gridSize);
-      const selectableColumns = grid.map(row => ({
-        numPlacementsLeft: row.length
-      }));
-      return { ...state, hasGameStarted: true, grid, selectableColumns };
+      return handleStartGame(state);
     }
     case BOARD_IS_FULL: {
       return { ...state, gameIsDraw: true, isLoading: false };

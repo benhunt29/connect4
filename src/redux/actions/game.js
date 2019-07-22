@@ -64,8 +64,6 @@ export const startGame = () => {
   };
 };
 
-export const resetGame = () => {
-  return dispatch => dispatch({ type: RESET_GAME });
-};
+export const resetGame = () => dispatch => dispatch({ type: RESET_GAME });
 
 export const resetError = () => dispatch => dispatch({ type: RESET_ERROR });
