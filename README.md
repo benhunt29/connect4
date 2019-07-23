@@ -1,4 +1,4 @@
-This is a playable 4x4 implementation of Connect4. The app is hosted on heroku [here](https://bhunt-drop-token.herokuapp.com/). To build it locally, do the follwing steps:
+This is a playable 4x4 implementation of Connect4. The app is hosted on heroku [here](http://bhunt-drop-token.herokuapp.com/). To build it locally, do the follwing steps:
 
 1. Clone the repo and install node if not already installed
 2. Run `npm install` (or `yarn install` if you have yarn)
