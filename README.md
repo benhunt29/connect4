@@ -1,4 +1,7 @@
-This is a playable 4x4 implementation of Connect4. The app is hosted on heroku [here](http://bhunt-drop-token.herokuapp.com/). To build it locally, do the follwing steps:
+This is a playable 6x6 implementation of Connect4. The app is hosted on heroku [here](http://bhunt-drop-token.herokuapp.com/).
+The computer is not very good, I just wanted to demonstrate integration with an external service (https://github.com/benhunt29/connect4lambda).
+
+To build it locally, do the follwing steps:
 
 1. Clone the repo and install node if not already installed
 2. Run `npm install` (or `yarn install` if you have yarn)
@@ -7,8 +10,8 @@ This is a playable 4x4 implementation of Connect4. The app is hosted on heroku [
 
 ### Notes
 
-1. There are minimal tests. In a real implementation, I'd write a bunch of tests for the components and the redux actions/reducers/selectors. Here I opted to just test what I felt was most important (the grid logic).
-2. Currently there's no way to view a grid after the game is over, it'd probably make sense to add a "start new game" button outside of a modal.
-3. I added a delay to the "computer response" to simulate "thinking". It feels a _little_ more like you're playing against a real person
-4. Instead of throwing an error when the player attempts to place a token in a filled column, I don't allow them to do that. I feel like it's a better user experience.
-5. The logic to check row/column/diagonal winners could probably be collapsed into a single function somehow. I didn't feel like it was worth it to spend the time making it into a single function. It also seems a bit more understandable when they're separated.
+This is a work-in-progress. Things to do:
+
+1. Allow for human vs human play.
+2. Add more tests.
+3. Clean up redux store.
