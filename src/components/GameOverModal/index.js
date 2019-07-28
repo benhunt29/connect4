@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -35,8 +35,18 @@ const getHeadingAndSubtext = (winner, isDraw) => {
 const GameOverModal = ({ isOpen = false, handleStartNewGame, winner }) => {
   const { headingText, subText } = getHeadingAndSubtext(winner);
 
+  const [isModalOpen, setIsModalOpen] = useState(isOpen);
+  useEffect(() => {
+    setIsModalOpen(isOpen);
+  }, [isOpen]);
+
   return (
-    <Modal isOpen={isOpen} isClosable={false}>
+    <Modal
+      isOpen={isModalOpen}
+      onClose={() => {
+        setIsModalOpen(false);
+      }}
+    >
       <div className="columns">
         <div className="column">
           <div className="columns">

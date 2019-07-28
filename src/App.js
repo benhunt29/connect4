@@ -24,7 +24,7 @@ function App() {
       <div className="column">
         <div className="columns is-centered is-mobile">
           <div className="column is-full">
-            <Header className="title is-1">Drop Token</Header>
+            <Header className="title is-1">Connect4</Header>
           </div>
         </div>
         <GameContainerWrapper className="columns is-mobile">

@@ -42,10 +42,12 @@ const Spinner = Styled.div`
   border-radius: 50%;
 `;
 
-const LoadingOverlay = () => (
-  <Overlay>
-    <Spinner />
-  </Overlay>
-);
+const LoadingOverlay = ({ isOpen = false }) => {
+  return isOpen ? (
+    <Overlay>
+      <Spinner />
+    </Overlay>
+  ) : null;
+};
 
 export default LoadingOverlay;

@@ -46,23 +46,29 @@ class GameContainer extends Component {
       hasError,
       resetErrorAction
     } = this.props;
+
+    const isGameOver = hasGameStarted && (winner !== "" || gameIsDraw);
+
     return (
       <>
-        {isLoading && <LoadingOverlay />}
+        <LoadingOverlay isOpen={isLoading} />
         <StartGameModal
           isOpen={!hasGameStarted}
           handleStartGame={this.handleStartGame}
         />
         <GameOverModal
-          isOpen={hasGameStarted && (winner !== "" || gameIsDraw)}
+          isOpen={isGameOver}
           handleStartNewGame={resetGameAction}
           winner={winner}
         />
         <ErrorModal isOpen={hasError} onClose={resetErrorAction} />
+
         <GameGrid
           grid={grid}
           handleMoveSelect={submitPlayerMoveAction}
           selectableColumns={selectableColumns}
+          isGameOver={isGameOver}
+          handleStartNewGame={resetGameAction}
         />
       </>
     );

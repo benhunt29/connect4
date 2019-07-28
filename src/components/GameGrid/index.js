@@ -14,7 +14,18 @@ const WrapperColumn = Styled.div`
   border-radius: 10px;
 `;
 
-const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
+const CenteredCol = Styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const GameGrid = ({
+  grid = [],
+  selectableColumns = [],
+  handleMoveSelect,
+  isGameOver,
+  handleStartNewGame
+}) => {
   let gridElements = grid.map((row, i) => {
     return (
       <div className="columns is-mobile is-gapless" key={`slotRow-${i}`}>
@@ -30,22 +41,28 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
   });
 
   const ButtonRow = (
-    <div className="columns is-mobile is-gapless">
-      {grid.map((col, index) => {
-        const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
-        return (
-          <div className="column" key={index}>
-            <Slot
-              color={PLAYER_COLORS["1"]}
-              handleMoveSelect={handleMoveSelect}
-              slotColumn={index}
-              isSelectable={isSelectable}
-              isVisible={!isSelectable}
-            />
-          </div>
-        );
-      })}
-    </div>
+    <CenteredCol className="columns is-mobile is-gapless">
+      {!isGameOver ? (
+        grid.map((col, index) => {
+          const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
+          return (
+            <div className="column" key={index}>
+              <Slot
+                color={PLAYER_COLORS["1"]}
+                handleMoveSelect={handleMoveSelect}
+                slotColumn={index}
+                isSelectable={isSelectable}
+                isVisible={!isSelectable}
+              />
+            </div>
+          );
+        })
+      ) : (
+        <button className="button is-primary" onClick={handleStartNewGame}>
+          Start a new game
+        </button>
+      )}
+    </CenteredCol>
   );
 
   return (
@@ -69,6 +86,8 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
 GameGrid.propTypes = {
   grid: PropTypes.array,
   handleMoveSelect: PropTypes.func,
+  handleStartNewGame: PropTypes.func,
+  isGameOver: PropTypes.bool,
   selectableColumns: PropTypes.array
 };
 
