@@ -10,20 +10,19 @@ import {
 } from "../actionTypes";
 
 const initialState = {
-  gridSize: 4,
+  gridSize: 6,
   isLoading: false,
   hasGameStarted: false,
   moves: [],
   grid: [],
   selectableColumns: [],
   gameIsDraw: false,
-  totalMovesLeft: 0,
   winner: "",
   error: undefined
 };
 
 const handleSubmitMoveSuccess = (state, payload) => {
-  const { grid, selectableColumns, gridSize } = state;
+  const { grid, selectableColumns } = state;
 
   const { moves, player } = payload;
   const lastMove = moves[moves.length - 1];
@@ -39,11 +38,11 @@ const handleSubmitMoveSuccess = (state, payload) => {
   const hasMovesLeft = newSelectableColumns.some(
     col => col.numPlacementsLeft > 0
   );
-  const winningMove = hasWinner(
-    newGrid,
-    { row: placedRow, col: placedCol, player },
-    gridSize
-  );
+  const winningMove = hasWinner(newGrid, {
+    row: placedRow,
+    col: placedCol,
+    player
+  });
   return {
     ...state,
     isLoading: false,

@@ -1,15 +1,10 @@
 export const formatUrl = (url, params) => {
-  const queryStringArray = Object.entries(params).reduce(
-    (acc, [key, val]) => {
-      acc.push(key);
-      acc.push("=");
-      acc.push(JSON.stringify(val));
-      return acc;
-    },
-    ["?"]
-  );
+  const queryStringArray = Object.entries(params).reduce((acc, [key, val]) => {
+    acc.push(`${key}=${JSON.stringify(val)}`);
+    return acc;
+  }, []);
   const queryString =
-    queryStringArray.length > 1 ? queryStringArray.join("") : "";
+    queryStringArray.length > 1 ? `?${queryStringArray.join("&")}` : "";
   return `${url}${encodeURI(queryString)}`;
 };
 

@@ -51,7 +51,7 @@ const GameGrid = ({ grid = [], selectableColumns = [], handleMoveSelect }) => {
   return (
     grid.length > 0 && (
       <WrapperColumns className="columns is-vcentered is-centered is-mobile">
-        <div className="column is-two-thirds-tablet is-full-mobile is-half-desktop">
+        <div className="column is-two-thirds-tablet is-full-mobile is-three-fourths-desktop is-half-fullhd">
           <div className="columns is-centered is-mobile">
             <WrapperColumn className="column">{ButtonRow}</WrapperColumn>
           </div>

@@ -12,7 +12,7 @@ import {
 export const fetchComputerMove = delay => {
   return async (dispatch, getState) => {
     const {
-      game: { moves = [] }
+      game: { moves = [], gridSize }
     } = getState();
     try {
       dispatch({ type: SUBMIT_MOVE_PENDING });
@@ -20,8 +20,8 @@ export const fetchComputerMove = delay => {
         await new Promise(resolve => setTimeout(resolve(), 1000));
       }
       const url = formatUrl(
-        "https://w0ayb2ph1k.execute-api.us-west-2.amazonaws.com/production",
-        { moves }
+        "https://q471hkjdga.execute-api.us-west-2.amazonaws.com/default/connect4",
+        { moves, size: gridSize }
       );
       const response = await makeRequest(url);
       dispatch({
