@@ -12,6 +12,7 @@ To build it locally, do the follwing steps:
 
 This is a work-in-progress. Things to do:
 
-1. Allow for human vs human play.
-2. Add more tests.
-3. Clean up redux store.
+1. Add more tests.
+2. Allow for color choice.
+3. Keep track of game history.
+4. Add some animations.
