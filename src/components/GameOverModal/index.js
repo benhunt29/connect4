@@ -3,6 +3,7 @@ import Styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Modal from "../Modal";
+import { PLAYER_IDS, GAME_MODES } from "../../constants";
 
 const CenteredColumn = Styled.div`
   display: flex;
@@ -11,29 +12,45 @@ const CenteredColumn = Styled.div`
   text-align: center;
 `;
 
-const getHeadingAndSubtext = (winner, isDraw) => {
-  if (winner === "1") {
+const getHeadingAndSubtext = (winner, gameMode) => {
+  if (gameMode === GAME_MODES.SINGLE_PLAYER && winner === PLAYER_IDS.PLAYER_1) {
     return {
       headingText: "Congratulations!",
       subText: "You won! So much for that robot revolution."
     };
-  } else if (winner === "2") {
+  } else if (
+    gameMode === GAME_MODES.SINGLE_PLAYER &&
+    winner === PLAYER_IDS.PLAYER_2
+  ) {
     return {
       headingText: "Oh no!",
       subText:
         "It looks like the robots have won this time! Don’t worry, I’m sure it’s just a fluke. Definitely... Don’t... Panic..."
     };
+  } else if (gameMode === GAME_MODES.MULTIPLAYER && winner !== "") {
+    return {
+      headingText: `Congratulations Player ${winner}!`,
+      subText: "You won!"
+    };
   } else {
     return {
       headingText: "Well...",
-      subText:
-        "It looks like we’ve got ourselves a draw. Who knows what the implications of that are? ¯\\_(ツ)_/¯"
+      subText: `It looks like we’ve got ourselves a draw.${
+        gameMode === GAME_MODES.SINGLE_PLAYER
+          ? " Who knows what the implications of that are? ¯\\_(ツ)_/¯"
+          : ""
+      }`
     };
   }
 };
 
-const GameOverModal = ({ isOpen = false, handleStartNewGame, winner }) => {
-  const { headingText, subText } = getHeadingAndSubtext(winner);
+const GameOverModal = ({
+  isOpen = false,
+  handleStartNewGame,
+  winner,
+  gameMode
+}) => {
+  const { headingText, subText } = getHeadingAndSubtext(winner, gameMode);
 
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
   useEffect(() => {

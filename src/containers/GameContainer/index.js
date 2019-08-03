@@ -16,52 +16,74 @@ import {
 } from "../../redux/actions/game";
 import {
   selectGrid,
-  selectGameHasStarted,
-  selectGameIsDraw,
-  selectHasError,
-  selectIsLoading,
   selectSelectableColumns,
-  selectWinner
+  selectNextMovePlayer,
+  selectGameMode,
+  selectCurrentGameState
 } from "../../redux/selectors/game";
+import { GAME_MODES, PLAYER_IDS, GAME_STATES } from "../../constants";
+
+const deriveWinningPlayer = nextMovePlayer => {
+  if (nextMovePlayer === PLAYER_IDS.PLAYER_1) {
+    return PLAYER_IDS.PLAYER_2;
+  }
+  return PLAYER_IDS.PLAYER_1;
+};
 
 class GameContainer extends Component {
-  handleStartGame = (event, computerStarts = false) => {
+  handleStartGame = (
+    event,
+    gameMode = GAME_MODES.MULTIPLAYER,
+    startingPlayer
+  ) => {
     const { fetchComputerMoveAction, startGameAction } = this.props;
-    startGameAction();
-    if (computerStarts) {
+    startGameAction(gameMode, startingPlayer);
+    if (
+      gameMode === GAME_MODES.SINGLE_PLAYER &&
+      startingPlayer === PLAYER_IDS.PLAYER_2
+    ) {
       fetchComputerMoveAction();
     }
   };
 
   render() {
     const {
-      isLoading,
-      hasGameStarted,
       grid,
       submitPlayerMoveAction,
       selectableColumns,
-      winner,
       resetGameAction,
-      gameIsDraw,
-      hasError,
-      resetErrorAction
+      resetErrorAction,
+      nextMovePlayer,
+      gameMode,
+      currentGameState
     } = this.props;
 
-    const isGameOver = hasGameStarted && (winner !== "" || gameIsDraw);
+    const isGameOver =
+      currentGameState === GAME_STATES.DRAW ||
+      currentGameState === GAME_STATES.WINNER;
 
     return (
       <>
-        <LoadingOverlay isOpen={isLoading} />
+        <LoadingOverlay isOpen={currentGameState === GAME_STATES.LOADING} />
         <StartGameModal
-          isOpen={!hasGameStarted}
+          isOpen={currentGameState === GAME_STATES.INITIAL}
           handleStartGame={this.handleStartGame}
+          gameMode={gameMode}
         />
         <GameOverModal
           isOpen={isGameOver}
           handleStartNewGame={resetGameAction}
-          winner={winner}
+          winner={
+            currentGameState === GAME_STATES.WINNER
+              ? deriveWinningPlayer(nextMovePlayer)
+              : ""
+          }
+          gameMode={gameMode}
         />
-        <ErrorModal isOpen={hasError} onClose={resetErrorAction} />
+        <ErrorModal
+          isOpen={currentGameState === GAME_STATES.ERROR}
+          onClose={resetErrorAction}
+        />
 
         <GameGrid
           grid={grid}
@@ -69,6 +91,7 @@ class GameContainer extends Component {
           selectableColumns={selectableColumns}
           isGameOver={isGameOver}
           handleStartNewGame={resetGameAction}
+          nextMovePlayer={nextMovePlayer}
         />
       </>
     );
@@ -77,26 +100,24 @@ class GameContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    isLoading: selectIsLoading(state),
-    hasGameStarted: selectGameHasStarted(state),
     grid: selectGrid(state),
     selectableColumns: selectSelectableColumns(state),
-    winner: selectWinner(state),
-    gameIsDraw: selectGameIsDraw(state),
-    hasError: selectHasError(state)
+    nextMovePlayer: selectNextMovePlayer(state),
+    gameMode: selectGameMode(state),
+    currentGameState: selectCurrentGameState(state)
   };
 };
 
 const mapDispatchToProps = {
   fetchComputerMoveAction: fetchComputerMove,
-  submitPlayerMoveAction: selectedColumn => submitPlayerMove(selectedColumn),
+  submitPlayerMoveAction: (selectedColumn, player) =>
+    submitPlayerMove(selectedColumn, player),
   startGameAction: startGame,
   resetGameAction: resetGame,
   resetErrorAction: resetError
 };
 
 GameContainer.propTypes = {
-  isLoading: PropTypes.bool,
   hasGameStarted: PropTypes.bool,
   grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   selectableColumns: PropTypes.arrayOf(
@@ -104,7 +125,16 @@ GameContainer.propTypes = {
   ),
   winner: PropTypes.string,
   gameIsDraw: PropTypes.bool,
-  hasError: PropTypes.bool
+  hasError: PropTypes.bool,
+  nextMovePlayer: PropTypes.oneOf([PLAYER_IDS.PLAYER_1, PLAYER_IDS.PLAYER_2]),
+  currentGameState: PropTypes.oneOf([
+    GAME_STATES.LOADING,
+    GAME_STATES.INITIAL,
+    GAME_STATES.STARTED,
+    GAME_STATES.DRAW,
+    GAME_STATES.ERROR,
+    GAME_STATES.WINNER
+  ])
 };
 
 export default connect(

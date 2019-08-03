@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Styled from "styled-components";
 
-import { PLAYER_COLORS } from "../../constants";
+import { PLAYER_IDS } from "../../constants";
 import Slot from "../Slot";
 
 const WrapperColumns = Styled.div`
@@ -24,7 +24,8 @@ const GameGrid = ({
   selectableColumns = [],
   handleMoveSelect,
   isGameOver,
-  handleStartNewGame
+  handleStartNewGame,
+  nextMovePlayer
 }) => {
   let gridElements = grid.map((row, i) => {
     return (
@@ -32,7 +33,7 @@ const GameGrid = ({
         {row.map((col, j) => {
           return (
             <div className="column" key={`slot${i}-${j}`}>
-              <Slot color={PLAYER_COLORS[col]} />
+              <Slot player={col} />
             </div>
           );
         })}
@@ -48,7 +49,7 @@ const GameGrid = ({
           return (
             <div className="column" key={index}>
               <Slot
-                color={PLAYER_COLORS["1"]}
+                player={nextMovePlayer}
                 handleMoveSelect={handleMoveSelect}
                 slotColumn={index}
                 isSelectable={isSelectable}
@@ -88,7 +89,8 @@ GameGrid.propTypes = {
   handleMoveSelect: PropTypes.func,
   handleStartNewGame: PropTypes.func,
   isGameOver: PropTypes.bool,
-  selectableColumns: PropTypes.array
+  selectableColumns: PropTypes.array,
+  nextMovePlayer: PropTypes.oneOf([PLAYER_IDS.PLAYER_1, PLAYER_IDS.PLAYER_2])
 };
 
 export default GameGrid;

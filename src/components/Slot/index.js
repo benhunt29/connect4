@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Styled from "styled-components";
+import { PLAYER_COLORS, PLAYER_IDS } from "../../constants";
 
 const Circle = Styled.div`
   border-radius: 50%;
@@ -30,16 +31,17 @@ const Slot = ({
   handleMoveSelect = noop,
   slotColumn,
   isSelectable,
-  isVisible = false
+  isVisible = false,
+  player
 }) => {
   const handleClick = useCallback(() => {
-    return handleMoveSelect(slotColumn);
-  }, [slotColumn, handleMoveSelect]);
+    return handleMoveSelect(slotColumn, player);
+  }, [slotColumn, handleMoveSelect, player]);
 
   return (
     <SlotRow className="column">
       <Circle
-        color={color}
+        color={PLAYER_COLORS[player]}
         onClick={handleClick}
         isSelectable={isSelectable}
         isVisible={isVisible}
@@ -53,7 +55,8 @@ Slot.propTypes = {
   handleMoveSelect: PropTypes.func,
   slotColumn: PropTypes.number,
   isSelectable: PropTypes.bool,
-  isVisiable: PropTypes.bool
+  isVisible: PropTypes.bool,
+  nextMovePlayer: PropTypes.oneOf([PLAYER_IDS.PLAYER_1, PLAYER_IDS.PLAYER_2])
 };
 
 export default Slot;
