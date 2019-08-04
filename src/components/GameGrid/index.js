@@ -7,10 +7,12 @@ import Slot from "../Slot";
 
 const WrapperColumns = Styled.div`
   height: 100%;
+  max-width: 800px;
+  margin: auto;
 `;
 
 const WrapperColumn = Styled.div`
-  padding: 30px 10px 30px 10px;
+  padding: 10px;
   border-radius: 10px;
 `;
 
@@ -29,7 +31,7 @@ const GameGrid = ({
 }) => {
   let gridElements = grid.map((row, i) => {
     return (
-      <div className="columns is-mobile is-gapless" key={`slotRow-${i}`}>
+      <div className="columns is-mobile" key={`slotRow-${i}`}>
         {row.map((col, j) => {
           return (
             <div className="column" key={`slot${i}-${j}`}>

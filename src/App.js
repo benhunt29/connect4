@@ -11,7 +11,7 @@ const GameContainerWrapper = Styled.div`
 const Header = Styled.div`
   text-align: center;
   padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 `;
 
 function App() {

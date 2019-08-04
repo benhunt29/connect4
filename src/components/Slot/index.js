@@ -5,8 +5,8 @@ import { PLAYER_COLORS, PLAYER_IDS } from "../../constants";
 
 const Circle = Styled.div`
   border-radius: 50%;
-  width: 5vw;
-  height: 5vw;
+  width: 3vw;
+  height: 3vw;
   min-width: 25px;
   min-height: 25px;
   max-width: 150px;
@@ -22,6 +22,8 @@ const SlotRow = Styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
 `;
 
 const noop = () => {};
@@ -39,7 +41,7 @@ const Slot = ({
   }, [slotColumn, handleMoveSelect, player]);
 
   return (
-    <SlotRow className="column">
+    <SlotRow>
       <Circle
         color={PLAYER_COLORS[player]}
         onClick={handleClick}
