@@ -15,7 +15,7 @@ const Circle = Styled.div`
   &:hover {
     cursor: ${props => (props.isSelectable ? "pointer" : "")};
   }
-  opacity: ${props => (props.isVisible ? 0 : 1)};
+  opacity: ${props => (props.isVisible ? 1 : 0)};
 `;
 
 const SlotRow = Styled.div`
@@ -33,7 +33,7 @@ const Slot = ({
   handleMoveSelect = noop,
   slotColumn,
   isSelectable,
-  isVisible = false,
+  isVisible = true,
   player
 }) => {
   const handleClick = useCallback(() => {
@@ -47,6 +47,10 @@ const Slot = ({
         onClick={handleClick}
         isSelectable={isSelectable}
         isVisible={isVisible}
+        title="game-token"
+        data-testid={`game-token${isSelectable ? " selectable" : ""}${
+          isVisible ? " visible" : ""
+        }`}
       />
     </SlotRow>
   );

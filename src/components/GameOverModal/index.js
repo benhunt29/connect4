@@ -63,6 +63,7 @@ const GameOverModal = ({
       onClose={() => {
         setIsModalOpen(false);
       }}
+      title={"game-over-modal"}
     >
       <div className="columns">
         <div className="column">

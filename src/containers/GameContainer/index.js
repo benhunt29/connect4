@@ -137,6 +137,8 @@ GameContainer.propTypes = {
   ])
 };
 
+export { GameContainer };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

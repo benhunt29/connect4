@@ -44,7 +44,7 @@ const Spinner = Styled.div`
 
 const LoadingOverlay = ({ isOpen = false }) => {
   return isOpen ? (
-    <Overlay>
+    <Overlay title="loading-overlay">
       <Spinner />
     </Overlay>
   ) : null;

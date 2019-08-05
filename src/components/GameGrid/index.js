@@ -56,10 +56,16 @@ const GameGrid = ({
   });
 
   const ButtonRow = (
-    <CenteredCol className="columns is-mobile is-gapless">
+    <CenteredCol
+      className="columns is-mobile is-gapless"
+      data-testid="button-row"
+    >
       {!isGameOver ? (
         grid.map((col, index) => {
-          const isSelectable = selectableColumns[index].numPlacementsLeft > 0;
+          const isSelectable = Boolean(
+            selectableColumns[index] &&
+              selectableColumns[index].numPlacementsLeft > 0
+          );
           return (
             <div className="column" key={index}>
               <Slot
@@ -67,7 +73,7 @@ const GameGrid = ({
                 handleMoveSelect={handleMoveSelect}
                 slotColumn={index}
                 isSelectable={isSelectable}
-                isVisible={!isSelectable}
+                isVisible={isSelectable}
               />
             </div>
           );
@@ -82,7 +88,10 @@ const GameGrid = ({
 
   return (
     grid.length > 0 && (
-      <WrapperColumns className="columns is-vcentered is-centered is-mobile">
+      <WrapperColumns
+        className="columns is-vcentered is-centered is-mobile"
+        title="game-grid"
+      >
         <div className="column is-two-thirds-tablet is-full-mobile is-three-fourths-desktop is-full-fullhd is-gapless">
           <div className="columns is-centered is-mobile">
             <WrapperColumn className="column">{ButtonRow}</WrapperColumn>

@@ -11,9 +11,15 @@ const ModalContent = Styled.div`
 
 const noop = () => {};
 
-const Modal = ({ isOpen = false, onClose, isClosable = true, children }) => {
+const Modal = ({
+  isOpen = false,
+  onClose,
+  isClosable = true,
+  children,
+  title
+}) => {
   return (
-    <div className={`modal${isOpen ? " is-active" : ""}`}>
+    <div className={`modal${isOpen ? " is-active" : ""}`} title={title}>
       <div className="modal-background" onClick={isClosable ? onClose : noop} />
       <ModalContent className="modal-content is-clipped">
         {children}
@@ -36,7 +42,8 @@ Modal.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ])
+  ]),
+  title: PropTypes.string
 };
 
 export default Modal;

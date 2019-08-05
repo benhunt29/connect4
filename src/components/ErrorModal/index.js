@@ -17,7 +17,12 @@ const ErrorModal = ({
   onClose
 }) => {
   return (
-    <Modal isOpen={isOpen} isClosable={true} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      isClosable={true}
+      onClose={onClose}
+      title="error-modal"
+    >
       <div className="columns">
         <div className="column">
           <div className="columns">

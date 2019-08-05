@@ -31,7 +31,7 @@ const StartGameModal = ({
   }, [handleStartGame, gameMode]);
 
   return (
-    <Modal isOpen={isOpen} isClosable={false}>
+    <Modal isOpen={isOpen} isClosable={false} title="start-game-modal">
       <div className="columns">
         <CenteredColumn className="column">
           <h2 className="title is-2">Let’s start a game!</h2>
