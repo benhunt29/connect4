@@ -5,10 +5,10 @@ import { PLAYER_COLORS, PLAYER_IDS } from "../../constants";
 
 const Circle = Styled.div`
   border-radius: 50%;
-  width: 3vw;
-  height: 3vw;
-  min-width: 25px;
-  min-height: 25px;
+  width: 3.5vw;
+  height: 3.5vw;
+  min-width: 30px;
+  min-height: 30px;
   max-width: 150px;
   max-height: 150px;
   background-color: ${props => props.color || "white"};

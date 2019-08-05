@@ -14,11 +14,20 @@ const WrapperColumns = Styled.div`
 const WrapperColumn = Styled.div`
   padding: 10px;
   border-radius: 10px;
+  &&& {
+    margin-bottom: 0;
+  }
 `;
 
 const CenteredCol = Styled.div`
   display: flex;
   justify-content: center;
+  margin: 0;
+  &&& {
+    margin-bottom: 0;
+  }
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 const GameGrid = ({
@@ -31,7 +40,10 @@ const GameGrid = ({
 }) => {
   let gridElements = grid.map((row, i) => {
     return (
-      <div className="columns is-mobile" key={`slotRow-${i}`}>
+      <CenteredCol
+        className="columns is-mobile is-gapless"
+        key={`slotRow-${i}`}
+      >
         {row.map((col, j) => {
           return (
             <div className="column" key={`slot${i}-${j}`}>
@@ -39,7 +51,7 @@ const GameGrid = ({
             </div>
           );
         })}
-      </div>
+      </CenteredCol>
     );
   });
 
@@ -71,11 +83,11 @@ const GameGrid = ({
   return (
     grid.length > 0 && (
       <WrapperColumns className="columns is-vcentered is-centered is-mobile">
-        <div className="column is-two-thirds-tablet is-full-mobile is-three-fourths-desktop is-full-fullhd">
+        <div className="column is-two-thirds-tablet is-full-mobile is-three-fourths-desktop is-full-fullhd is-gapless">
           <div className="columns is-centered is-mobile">
             <WrapperColumn className="column">{ButtonRow}</WrapperColumn>
           </div>
-          <div className="columns is-centered is-mobile">
+          <div className="columns is-centered is-mobile is-gapless">
             <WrapperColumn className="column has-background-grey-lighter">
               {gridElements}
             </WrapperColumn>

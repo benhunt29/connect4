@@ -12,6 +12,10 @@ const Header = Styled.div`
   text-align: center;
   padding-top: 50px;
   padding-bottom: 20px;
+  @media (min-height: 568px) {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
 `;
 
 function App() {
